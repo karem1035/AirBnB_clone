@@ -29,6 +29,17 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(obj_dict['created_at'], str)
         self.assertIsInstance(obj_dict['updated_at'], str)
 
+    def test_empty_kwargs(self):
+        """Test creating an instance with empty kwargs"""
+        obj = BaseModel()
+        self.assertIsNotNone(obj.id)
+
+    def test_valid_kwargs(self):
+        """Test that kwargs works"""
+        kwargs = {'attr1': 'value1'}
+        obj = BaseModel(**kwargs)
+        self.assertEqual(obj.attr1, 'value1')
+
 
 if __name__ == '__main__':
     unittest.main()
