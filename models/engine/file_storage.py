@@ -3,6 +3,7 @@
 file and deserializes JSON file to instances"""
 import json
 from models.base_model import BaseModel
+from datetime import datetime
 
 class FileStorage:
     """
@@ -37,14 +38,18 @@ class FileStorage:
         """serializes __objects to the JSON file"""
         obj_to_dict ={key: obj.to_dict() for key, obj in self.__objects.items()}
         with open(self.__file_path, 'w') as files:
-            json.dump(obj_dict,files)
+            json.dump(obj_to_dict,files)
 
-    def reload(Self):
+    def reload(self):
         """eserializes the JSON file to __objects"""
         try:
-            with open (self.__file_path, 'r') ad files:
+            with open (self.__file_path, 'r') as files:
                 object_dict = json.load(files)
                 for key, value in object_dict.items():
                     class_name, obj_id = key.split('.')
                     object_dict[key]['created_at'] = datetime.strptime(value['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
                     object_dict[key]['updated_at'] = datetime.strptime(value['updated_at'], "%Y-%m-%dT%H:%M:%S.%f")
+                    class_ = eval(class_name)
+                    self.__objects[key] = class_(**value)
+        except FileNotFoundError:
+            pass
