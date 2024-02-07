@@ -41,4 +41,10 @@ class FileStorage:
 
     def reload(Self):
         """eserializes the JSON file to __objects"""
-
+        try:
+            with open (self.__file_path, 'r') ad files:
+                object_dict = json.load(files)
+                for key, value in object_dict.items():
+                    class_name, obj_id = key.split('.')
+                    object_dict[key]['created_at'] = datetime.strptime(value['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
+                    object_dict[key]['updated_at'] = datetime.strptime(value['updated_at'], "%Y-%m-%dT%H:%M:%S.%f")
