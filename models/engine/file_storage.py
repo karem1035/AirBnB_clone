@@ -47,8 +47,8 @@ class FileStorage:
                 object_dict = json.load(files)
                 for key, value in object_dict.items():
                     class_name, obj_id = key.split('.')
-                    object_dict[key]['created_at'] = datetime.strptime(value['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
-                    object_dict[key]['updated_at'] = datetime.strptime(value['updated_at'], "%Y-%m-%dT%H:%M:%S.%f")
+                    value['created_at'] = datetime.strptime(value['created_at'], "%Y-%m-%d %H:%M:%S.%f")
+                    value['updated_at'] = datetime.strptime(value['updated_at'], "%Y-%m-%d %H:%M:%S.%f")
                     class_ = eval(class_name)
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:
