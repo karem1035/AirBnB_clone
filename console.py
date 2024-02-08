@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
             object_key = f"{class_name}.{instance_id}"
             objectFound = storage.all().get(object_key)
             if objectFound:
-                print(obj)
+                print(objectFound)
             else:
                 print("** no instance found **")
         except NameError:
@@ -81,6 +81,24 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
         except NameError:
             print("** class doesn't exist **")
+
+    def do_all(self, line):
+        """Prints all string representation of all instances based"""
+        try:
+            if not line:
+                objects = storage.all().values()
+            else:
+                class_name = line.strip()
+                class_instance = eval(class_name)
+                if not issubclass(class_instance, BaseModel):
+                    raise NameError
+                objects = [str(obj) for obj in storage.all().values()
+                        if type(obj).__name__ == class_name]
+            print(objects)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        
 
 
 
