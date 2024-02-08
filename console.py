@@ -73,9 +73,9 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             object_key = f"{class_name}.{instance_id}"
-            objectFound = storage.all()
-            if object_key in objectFound:
-                del objectFound[obj_key]
+            objects = storage.all()
+            if object_key in objects:
+                del objects[object_key]
                 storage.save()
             else:
                 print("** no instance found **")
@@ -102,8 +102,42 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file)"""
+        if not line:
+            print("** class name missing **")
+            return
+        lines = line.split()
+        if len(lines) < 2:
+            print("** instance id missing **")
+            return
+        try:
+            class_name = lines[0]
+            class_id = lines[1]
+            object_key = f"{class_name}.{class_id}"
+            class_instance = eval(class_name)
 
-        
+            if not issubclass(class_instance, BaseModel):
+                print("** class doesn't exist **")
+                return
+            
+            objects = storage.all()
+            if object_key not in objects:
+                print("** no instance found **")
+                return
+
+            attribute_name = lines[2]
+            if len(lines) < 3:
+                print("** attribute name missing **")
+                return
+
+            attribute_value = lines[3]
+            if len(lines) < 4:
+                print("** value missing **")
+                return
+            obj = objects[object_key]
+            setattr(obj, attribute_name, attribute_value)
+            obj.save()
+        except NameError:
+            print("** class doesn't exist **")
 
 
 
