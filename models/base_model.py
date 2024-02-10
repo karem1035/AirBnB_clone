@@ -48,9 +48,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if key in ['created_at', 'updated_at']:
-                        if isinstance(value, str):
-                            value = datetime.strptime(
-                                value, '%Y-%m-%dT%H:%M:%S.%f')
+                        setattr(self, key, datetime.fromisoformat(value))
                     else:
                         setattr(self, key, value)
         else:
@@ -72,7 +70,6 @@ class BaseModel:
         """this code return dictionary containg all but it will add cla"""
         instance_dict = self.__dict__.copy()
         instance_dict.update({'__class__': self.__class__.__name__})
-        instance_dict['__class__'] = self.__class__.__name__
         instance_dict['created_at'] = self.created_at.isoformat()
         instance_dict['updated_at'] = self.updated_at.isoformat()
         return instance_dict
