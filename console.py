@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** attribute name missing **")
                 return
 
-            attribute_value = lines[3]
+            attribute_value = lines[3].strip('"')
             if len(lines) < 4:
                 print("** value missing **")
                 return
