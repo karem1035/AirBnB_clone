@@ -56,7 +56,7 @@ class BaseModel:
         else:
             from models import storage
             storage.new(self)
-            pass
+
 
     def __str__(self):
         """print class name, id and dictionary"""
