@@ -54,18 +54,19 @@ class BaseModel:
                     else:
                         setattr(self, key, value)
         else:
-            from models import storage
-            storage.new(self)
+            # from models import storage
+            # storage.new(self)
+            pass
 
     def __str__(self):
         """print class name, id and dictionary"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        from models import storage
+        # from models import storage
         """this method update the time of save"""
         self.updated_at = datetime.now()
-        storage.save()
+        # storage.save()
 
     def to_dict(self):
         """this code return dictionary containg all but it will add cla"""
