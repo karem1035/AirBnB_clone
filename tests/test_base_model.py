@@ -21,7 +21,6 @@ class TestBaseModel(unittest.TestCase):
         obj.save()
         self.assertGreater(obj.updated_at, initial_updated_at)
 
-
     def test_to_dict(self):
         """Test the to_dict method of a BaseModel instance."""
         obj = BaseModel()
