@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""this code is console which help the user to use the airbnb
+website"""
 import cmd
 from models import storage
 from models.base_model import BaseModel
