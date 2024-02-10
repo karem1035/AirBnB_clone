@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from models.model_base import BaseModel
 
+
 class Review(BaseModel):
     place_id = ""
     user_id = ""

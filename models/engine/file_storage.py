@@ -5,6 +5,7 @@ import json
 from models.base_model import BaseModel
 from datetime import datetime
 
+
 class FileStorage:
     """
     this class will serializes instances
@@ -36,19 +37,22 @@ class FileStorage:
 
     def save(self):
         """serializes __objects to the JSON file"""
-        obj_to_dict ={key: obj.to_dict() for key, obj in self.__objects.items()}
+        obj_to_dict = {key: obj.to_dict()
+                       for key, obj in self.__objects.items()}
         with open(self.__file_path, 'w') as files:
-            json.dump(obj_to_dict,files)
+            json.dump(obj_to_dict, files)
 
     def reload(self):
         """eserializes the JSON file to __objects"""
         try:
-            with open (self.__file_path, 'r') as files:
+            with open(self.__file_path, 'r') as files:
                 object_dict = json.load(files)
                 for key, value in object_dict.items():
                     class_name, obj_id = key.split('.')
-                    value['created_at'] = datetime.strptime(value['created_at'], "%Y-%m-%d %H:%M:%S.%f")
-                    value['updated_at'] = datetime.strptime(value['updated_at'], "%Y-%m-%d %H:%M:%S.%f")
+                    value['created_at'] = datetime.strptime(
+                        value['created_at'], "%Y-%m-%d %H:%M:%S.%f")
+                    value['updated_at'] = datetime.strptime(
+                        value['updated_at'], "%Y-%m-%d %H:%M:%S.%f")
                     class_ = eval(class_name)
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:

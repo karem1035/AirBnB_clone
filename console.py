@@ -62,7 +62,7 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return
-        
+
         lines = line.split()
         try:
             class_name = lines[0]
@@ -93,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
                 if not issubclass(class_instance, BaseModel):
                     raise NameError
                 objects = [str(obj) for obj in storage.all().values()
-                        if type(obj).__name__ == class_name]
+                           if type(obj).__name__ == class_name]
             print(objects)
         except NameError:
             print("** class doesn't exist **")
@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
             if not issubclass(class_instance, BaseModel):
                 print("** class doesn't exist **")
                 return
-            
+
             objects = storage.all()
             if object_key not in objects:
                 print("** no instance found **")
@@ -140,7 +140,5 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
 
-
-        
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
