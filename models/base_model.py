@@ -48,30 +48,28 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if key in ['created_at', 'updated_at']:
-                        if isinstance(value, str):
-                            value = datetime.strptime(
-                                    value, '%Y-%m-%dT%H:%M:%S.%f')
+                        setattr(self, key, datetime.fromisoformat(value))
                     else:
                         setattr(self, key, value)
         else:
-            from models import storage
-            storage.new(self)
-
+            # from models import storage
+            # storage.new(self)
+            pass
 
     def __str__(self):
         """print class name, id and dictionary"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        from models import storage
+        # from models import storage
         """this method update the time of save"""
         self.updated_at = datetime.now()
-        storage.save()
+        # storage.save()
 
     def to_dict(self):
         """this code return dictionary containg all but it will add cla"""
         instance_dict = self.__dict__.copy()
-        instance_dict['__class__'] = self.__class__.__name__
-        instance_dict['created_at'] = self.created_at.strftime("%Y-%m-%d %H:%M:%S.%f")
-        instance_dict['updated_at'] = self.updated_at.strftime("%Y-%m-%d %H:%M:%S.%f")
+        instance_dict.update({'__class__': self.__class__.__name__})
+        instance_dict['created_at'] = self.created_at.isoformat()
+        instance_dict['updated_at'] = self.updated_at.isoformat()
         return instance_dict
