@@ -1,44 +1,79 @@
-import unittest
+#!/usr/bin/python3
+"""define test class to test the json file storage,
+FileStorage class and
+storage instance"""
+
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+import os
+
+
+import unittest
+
+
+"""define test class to test the json file storage,
+FileStorage class and
+storage instance"""
 
 
 class TestFileStorage(unittest.TestCase):
-
     def setUp(self):
-        self.storage = FileStorage()
+        '''set up module'''
+        try:
+            os.remove('file.json')
+        except Exception as e:
+            pass
         self.base_model = BaseModel()
-        self.base_model.save()
+        self.storage = FileStorage()
+        self.storage.all().clear()
 
     def tearDown(self):
-        del self.storage
+        '''tear down module'''
         del self.base_model
+        del self.storage
+        try:
+            os.remove('file.json')
+        except Exception as e:
+            pass
 
     def test_all(self):
-        all_objs = self.storage.all()
-        self.assertIsInstance(all_objs, dict)
-        self.assertIn(f"BaseModel.{self.base_model.id}", all_objs)
+        '''test all method'''
+        # Assert that the initial all() method returns an empty dictionary
+        self.assertEqual(self.storage.all(), {})
+
+        # Add an object to the storage and assert that all() returns the object
+        self.storage.new(self.base_model)
+        self.assertEqual(self.storage.all(), {'BaseModel.{}'.format(
+            self.base_model.id): self.base_model})
+        self.assertEqual(type(self.storage.all()), dict)
 
     def test_new(self):
+        '''test new method'''
+        init_len = len(self.storage.all())
         new_obj = BaseModel()
         self.storage.new(new_obj)
-        all_objs = self.storage.all()
-        self.assertIn(f"BaseModel.{new_obj.id}", all_objs)
 
-    def test_save_and_reload(self):
+        self.assertEqual(init_len + 1, len(self.storage.all()))
+
+        self.assertIn(f'{new_obj.__class__.__name__}.{new_obj.id}',
+                      self.storage.all().keys())
+
+        self.assertIn(new_obj, self.storage.all().values())
+
+    def test_reload_save(self):
+        '''test reload method'''
+        try:
+            os.remove('file.json')
+        except Exception as e:
+            pass
         new_obj = BaseModel()
-        self.storage.new(new_obj)
-        self.storage.save()
+        new_obj.save()
+        self.assertTrue(os.path.exists('file.json'))
 
-        # Create a new storage instance for reload test
-        new_storage = FileStorage()
-        new_storage.reload()
-        all_objs = new_storage.all()
+        self.assertNotEqual(os.path.getsize('file.json'), 0)
+        self.storage.reload()
+        self.assertIn(f'{new_obj.__class__.__name__}.{new_obj.id}',
+                      self.storage.all().keys())
+        reloaded_obj = self.storage.all()[f"BaseModel.{new_obj.id}"]
 
-        self.assertIn(f"BaseModel.{new_obj.id}", all_objs)
-        self.assertEqual(
-            all_objs[f"BaseModel.{new_obj.id}"].to_dict(), new_obj.to_dict())
-
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(reloaded_obj.id, new_obj.id)
