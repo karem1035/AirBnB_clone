@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """Defines the aminity class."""
+
+
 from models.base_model import BaseModel
 
 
