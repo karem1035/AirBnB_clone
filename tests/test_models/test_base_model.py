@@ -10,13 +10,12 @@ import os
 class TestBaseModel(unittest.TestCase):
     """test class for testing BaseModel"""
 
-    @classmethod
-    def setUpClass(cls):
-        """Set up the test class"""
-        try:
-            os.remove('file.json')
-        except FileNotFoundError:
-            pass
+
+
+
+
+
+
 
     def setUp(self):
         """set up module"""
