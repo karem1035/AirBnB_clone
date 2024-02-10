@@ -72,4 +72,4 @@ class BaseModel:
         instance_dict.update({'__class__': self.__class__.__name__})
         instance_dict['created_at'] = self.created_at.isoformat()
         instance_dict['updated_at'] = self.updated_at.isoformat()
-        return instance_dict
+        return instance_dict    
