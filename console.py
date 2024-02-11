@@ -14,8 +14,8 @@ from models.state import State
 class HBNBCommand(cmd.Cmd):
     """Command Processor"""
     classes = [
-            "BaseModel", "User", "Place", "City", "Review", "Amenity", "State"
-            ]
+        "BaseModel", "User", "Place", "City", "Review", "Amenity", "State"
+    ]
 
     prompt = '(hbnb) '
 
@@ -112,10 +112,10 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            objects =[
-                    str(obj) for obj in storage.all().values()
-                    if type(obj).__name__ == class_name
-                    ]
+            objects = [
+                str(obj) for obj in storage.all().values()
+                if type(obj).__name__ == class_name
+            ]
 
         print(objects)
 
@@ -157,6 +157,7 @@ class HBNBCommand(cmd.Cmd):
         obj = objects[object_key]
         setattr(obj, attribute_name, attribute_value)
         obj.save()
+
     def default(self, line):
         """Handle <class name>.all() command"""
         try:
@@ -174,7 +175,6 @@ class HBNBCommand(cmd.Cmd):
                 raise ValueError
         except ValueError:
             print("** Unknown syntax:", line)
-
 
 
 if __name__ == '__main__':
