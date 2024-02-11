@@ -2,7 +2,7 @@
 """define the review class"""
 
 
-from models.model_base import BaseModel
+from models.base_model import BaseModel
 
 
 class Review(BaseModel):
