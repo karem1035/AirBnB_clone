@@ -10,9 +10,12 @@ from models.review import Review
 from models.amenity import Amenity
 from models.state import State
 
+
 class HBNBCommand(cmd.Cmd):
     """Command Processor"""
-    classes = ["BaseModel", "User", "Place", "City", "Review", "Amenity", "State"]
+    classes = [
+            "BaseModel", "User", "Place", "City", "Review", "Amenity", "State"
+            ]
 
     prompt = '(hbnb) '
 
