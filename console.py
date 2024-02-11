@@ -7,6 +7,7 @@ from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """Command Processor"""
+    classes = ["BaseModel"]
 
     prompt = '(hbnb) '
 
@@ -27,13 +28,13 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return
-        try:
-            new_instance = eval(line)()
+        class_name = line.split()[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            new_instance = eval(class_name)()
             new_instance.save()
             print(new_instance.id)
-        except NameError:
-            print("** class doesn't exist **")
-
     def do_show(self, line):
         """Prints the string representation of an instance"""
         if not line:
@@ -41,23 +42,25 @@ class HBNBCommand(cmd.Cmd):
             return
 
         lines = line.split()
-        try:
-            class_name = lines[0]
-            instance_id = lines[1]
-        except IndexError:
+        if len(lines) < 2:
+            print("** instance id missing **")
+            return
+        class_name = lines[0]
+        instance_id = lines[1]
+        if not instance_id:
             print("** instance id missing **")
             return
 
-        try:
-            object_key = f"{class_name}.{instance_id}"
-            objectFound = storage.all().get(object_key)
-            if objectFound:
-                print(objectFound)
-            else:
-                print("** no instance found **")
-        except NameError:
+        if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
 
+        object_key = f"{class_name}.{instance_id}"
+        objectFound = storage.all().get(object_key)
+        if objectFound:
+            print(objectFound)
+        else:
+            print("** no instance found **")
     def do_destroy(self, line):
         """eletes an instance based on the class name and id"""
         if not line:
@@ -65,23 +68,22 @@ class HBNBCommand(cmd.Cmd):
             return
 
         lines = line.split()
-        try:
-            class_name = lines[0]
-            instance_id = lines[1]
-        except IndexError:
+        if len(lines) < 2:
             print("** instance id missing **")
             return
-
-        try:
-            object_key = f"{class_name}.{instance_id}"
-            objects = storage.all()
-            if object_key in objects:
-                del objects[object_key]
-                storage.save()
-            else:
-                print("** no instance found **")
-        except NameError:
+        class_name = lines[0]
+        instance_id = lines[1]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+        
+        object_key = f"{class_name}.{instance_id}"
+        objects = storage.all()
+        if object_key in objects:
+            del objects[object_key]
+            storage.save()
+        else:
+            print("** no instance found **")
 
     def do_all(self, line):
         """Prints all string representation of all instances based"""
@@ -106,39 +108,43 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return
+        
         lines = line.split()
-        if len(lines) < 2:
+        if len(lines) < 3:
             print("** instance id missing **")
             return
-        try:
-            class_name = lines[0]
-            class_id = lines[1]
-            object_key = f"{class_name}.{class_id}"
-            class_instance = eval(class_name)
-
-            if not issubclass(class_instance, BaseModel):
-                print("** class doesn't exist **")
-                return
-
-            objects = storage.all()
-            if object_key not in objects:
-                print("** no instance found **")
-                return
-
-            attribute_name = lines[2]
-            if len(lines) < 3:
-                print("** attribute name missing **")
-                return
-
-            attribute_value = lines[3].strip('"')
-            if len(lines) < 4:
-                print("** value missing **")
-                return
-            obj = objects[object_key]
-            setattr(obj, attribute_name, attribute_value)
-            obj.save()
-        except NameError:
+        
+        class_name = lines[0]
+        class_id = lines[1]
+        attribute_name = lines[2]
+        attribute_value = lines[3].strip('"')
+        
+        if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+        
+        object_key = f"{class_name}.{class_id}"
+        class_instance = eval(class_name)
+
+        if not issubclass(class_instance, BaseModel):
+            print("** class doesn't exist **")
+            return
+        
+        objects = storage.all()
+        if object_key not in objects:
+            print("** no instance found **")
+            return
+
+        if len(lines) < 4:
+            print("** attribute name missing **")
+            return
+
+        if len(lines) < 5:
+            print("** value missing **")
+            return
+        obj = objects[object_key]
+        setattr(obj, attribute_name, attribute_value)
+        obj.save()
 
 
 if __name__ == '__main__':
