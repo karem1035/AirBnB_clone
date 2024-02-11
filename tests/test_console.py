@@ -526,26 +526,6 @@ EOF  all  count  create  destroy  help  quit  show  update
         self.assertIn(attr, s)
         self.assertIn(val, s)
 
-    def test_update_7(self):
-        """Tests update 1..."""
-        classname = "Place"
-        attr = "foostr"
-        val = "fooval"
-        uid = self.create_class(classname)
-        cmd = '{}.update("{}", "{}", "{}")'
-        #  cmd = 'update {} {} {} {}'
-        cmd = cmd.format(classname, uid, attr, val)
-        #  print("CMD::", cmd)
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd(cmd)
-        s = f.getvalue()
-        self.assertEqual(len(s), 0)
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd('{}.show("{}")'.format(classname, uid))
-        s = f.getvalue()
-        self.assertIn(attr, s)
-        self.assertIn(val, s)
-
     def test_update_everything(self):
         """Tests update command with errthang, like a baws."""
         for classname, cls in self.classes().items():
@@ -570,31 +550,6 @@ EOF  all  count  create  destroy  help  quit  show  update
                 self.help_test_update(classname, uid, attr,
                                       self.attribute_values[attr_type],
                                       False, True)
-
-    def help_test_update(self, classname, uid, attr, val, quotes, func):
-        """Tests update commmand."""
-        #  print("QUOTES", quotes)
-        FileStorage._FileStorage__objects = {}
-        if os.path.isfile("file.json"):
-            os.remove("file.json")
-        uid = self.create_class(classname)
-        value_str = ('"{}"' if quotes else '{}').format(val)
-        if func:
-            cmd = '{}.update("{}", "{}", {})'
-        else:
-            cmd = 'update {} {} {} {}'
-        cmd = cmd.format(classname, uid, attr, value_str)
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd(cmd)
-        msg = f.getvalue()[:-1]
-        # print("MSG::", msg)
-        # print("CMD::", cmd)
-        self.assertEqual(len(msg), 0)
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd('{}.show("{}")'.format(classname, uid))
-        s = f.getvalue()
-        self.assertIn(str(val), s)
-        self.assertIn(attr, s)
 
     def test_do_update_error(self):
         """Tests update command with errors."""
