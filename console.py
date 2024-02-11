@@ -166,10 +166,14 @@ class HBNBCommand(cmd.Cmd):
                 for key, instance in storage.all().items():
                     if key.split(".")[0] == class_name:
                         class_instances.append(str(instance))
-                if class_instances:
-                    print(class_instances)
-                else:
-                    print("** No instances found **")
+                print(class_instances)
+            elif command == "count()":
+                count = 0
+                for key in storage.all().keys():
+                    if key.split(".")[0] == class_name:
+                        count += 1
+                print(count)
+
             else:
                 raise ValueError
         except ValueError:
