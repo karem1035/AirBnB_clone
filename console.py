@@ -104,8 +104,10 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            objects = [str(obj) for obj in storage.all().values()
-                    if type(obj).__name__ == class_name]
+            objects = [
+                    str(obj) for obj in storage.all().values()
+                    if type(obj).__name__ == class_name
+                    ]
 
         print(objects)
 
@@ -123,8 +125,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if len(lines) < 2:
-             print("** instance id missing **")
-             return
+            print("** instance id missing **")
+            return
         class_id = lines[1]
         object_key = f"{class_name}.{class_id}"
         class_instance = eval(class_name)
