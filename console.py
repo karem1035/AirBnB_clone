@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
             return
         
         lines = line.split()
-        if len(lines) < 3:
+        if len(lines) < 2:
             print("** instance id missing **")
             return
         
@@ -135,11 +135,10 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
-        if len(lines) < 4:
+        if len(lines) < 3:
             print("** attribute name missing **")
             return
-
-        if len(lines) < 5:
+        elif len(lines) < 4:
             print("** value missing **")
             return
         obj = objects[object_key]
