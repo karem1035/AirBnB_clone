@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """Define the stateclass"""
-
-
 from models.base_model import BaseModel
 
 
