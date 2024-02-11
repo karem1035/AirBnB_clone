@@ -4,11 +4,15 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-
+from models.place import Place
+from models.city import City
+from models.review import Review
+from models.amenity import Amenity
+from models.state import State
 
 class HBNBCommand(cmd.Cmd):
     """Command Processor"""
-    classes = ["BaseModel", "User"]
+    classes = ["BaseModel", "User", "Place", "City", "Review", "Amenity", "State"]
 
     prompt = '(hbnb) '
 
