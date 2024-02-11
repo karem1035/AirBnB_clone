@@ -117,37 +117,33 @@ class HBNBCommand(cmd.Cmd):
             return
 
         lines = line.split()
-        if len(lines) < 2:
-            print("** instance id missing **")
-            return
-
         class_name = lines[0]
-        class_id = lines[1]
-        attribute_name = lines[2]
-        attribute_value = lines[3].strip('"')
-
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
+        if len(lines) < 2:
+             print("** instance id missing **")
+             return
+        class_id = lines[1]
         object_key = f"{class_name}.{class_id}"
         class_instance = eval(class_name)
-
         if not issubclass(class_instance, BaseModel):
             print("** class doesn't exist **")
             return
-
         objects = storage.all()
         if object_key not in objects:
             print("** no instance found **")
             return
-
         if len(lines) < 3:
             print("** attribute name missing **")
             return
         elif len(lines) < 4:
             print("** value missing **")
             return
+        attribute_name = lines[2]
+        attribute_value = lines[3].strip('"')
+
         obj = objects[object_key]
         setattr(obj, attribute_name, attribute_value)
         obj.save()
