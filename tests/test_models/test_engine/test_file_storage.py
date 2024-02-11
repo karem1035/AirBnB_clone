@@ -1,79 +1,106 @@
 #!/usr/bin/python3
-"""define test class to test the json file storage,
-FileStorage class and
-storage instance"""
+"""Unittest module for the FileStorage class."""
 
+import unittest
+from datetime import datetime
+import time
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models import storage
+import re
+import json
 import os
 
 
-import unittest
-
-
-"""define test class to test the json file storage,
-FileStorage class and
-storage instance"""
-
-
 class TestFileStorage(unittest.TestCase):
+    """Test Cases for the FileStorage class."""
+
     def setUp(self):
-        '''set up module'''
-        try:
-            os.remove('file.json')
-        except Exception as e:
-            pass
-        self.base_model = BaseModel()
-        self.storage = FileStorage()
-        self.storage.all().clear()
+        """Sets up test methods."""
+        pass
+
+    def resetStorage(self):
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
 
     def tearDown(self):
-        '''tear down module'''
-        del self.base_model
-        del self.storage
-        try:
-            os.remove('file.json')
-        except Exception as e:
-            pass
+        """Tears down test methods."""
+        self.resetStorage()
+        pass
 
-    def test_all(self):
-        '''test all method'''
-        # Assert that the initial all() method returns an empty dictionary
-        self.assertEqual(self.storage.all(), {})
+    def test_5_instantiation(self):
+        """Tests instantiation of storage class."""
+        self.assertEqual(type(storage).__name__, "FileStorage")
 
-        # Add an object to the storage and assert that all() returns the object
-        self.storage.new(self.base_model)
-        self.assertEqual(self.storage.all(), {'BaseModel.{}'.format(
-            self.base_model.id): self.base_model})
-        self.assertEqual(type(self.storage.all()), dict)
+    def test_3_init_no_args(self):
+        """Tests __init__ with no arguments."""
+        self.resetStorage()
+        with self.assertRaises(TypeError) as e:
+            FileStorage.__init__()
+        msg = "descriptor '__init__' of 'object' object needs an argument"
+        self.assertEqual(str(e.exception), msg)
 
-    def test_new(self):
-        '''test new method'''
-        init_len = len(self.storage.all())
-        new_obj = BaseModel()
-        self.storage.new(new_obj)
+    def test_5_attributes(self):
+        """Tests class attributes."""
+        self.resetStorage()
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__file_path"))
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__objects"))
+        self.assertEqual(getattr(FileStorage, "_FileStorage__objects"), {})
 
-        self.assertEqual(init_len + 1, len(self.storage.all()))
+    def help_test_all_multiple(self, classname):
+        """Helper tests all() method with many objects for classname."""
+        self.resetStorage()
+        self.assertEqual(storage.all(), {})
 
-        self.assertIn(f'{new_obj.__class__.__name__}.{new_obj.id}',
-                      self.storage.all().keys())
+        cls = storage.classes()[classname]
+        objs = [cls() for i in range(1000)]
+        [storage.new(o) for o in objs]
+        self.assertEqual(len(objs), len(storage.all()))
+        for o in objs:
+            key = "{}.{}".format(type(o).__name__, o.id)
+            self.assertTrue(key in storage.all())
+            self.assertEqual(storage.all()[key], o)
 
-        self.assertIn(new_obj, self.storage.all().values())
+    def help_test_new(self, classname):
+        """Helps tests new() method for classname."""
+        self.resetStorage()
+        cls = storage.classes()[classname]
+        o = cls()
+        storage.new(o)
+        key = "{}.{}".format(type(o).__name__, o.id)
+        self.assertTrue(key in FileStorage._FileStorage__objects)
+        self.assertEqual(FileStorage._FileStorage__objects[key], o)
 
-    def test_reload_save(self):
-        '''test reload method'''
-        try:
-            os.remove('file.json')
-        except Exception as e:
-            pass
-        new_obj = BaseModel()
-        new_obj.save()
-        self.assertTrue(os.path.exists('file.json'))
+    def help_test_reload(self, classname):
+        """Helps test reload() method for classname."""
+        self.resetStorage()
+        storage.reload()
+        self.assertEqual(FileStorage._FileStorage__objects, {})
+        cls = storage.classes()[classname]
+        o = cls()
+        storage.new(o)
+        key = "{}.{}".format(type(o).__name__, o.id)
+        storage.save()
+        storage.reload()
+        self.assertEqual(o.to_dict(), storage.all()[key].to_dict())
 
-        self.assertNotEqual(os.path.getsize('file.json'), 0)
-        self.storage.reload()
-        self.assertIn(f'{new_obj.__class__.__name__}.{new_obj.id}',
-                      self.storage.all().keys())
-        reloaded_obj = self.storage.all()[f"BaseModel.{new_obj.id}"]
+    def help_test_reload_mismatch(self, classname):
+        """Helps test reload() method for classname."""
+        self.resetStorage()
+        storage.reload()
+        self.assertEqual(FileStorage._FileStorage__objects, {})
 
-        self.assertEqual(reloaded_obj.id, new_obj.id)
+        cls = storage.classes()[classname]
+        o = cls()
+        storage.new(o)
+        key = "{}.{}".format(type(o).__name__, o.id)
+        storage.save()
+        o.name = "Laura"
+        storage.reload()
+        self.assertNotEqual(o.to_dict(), storage.all()[key].to_dict())
+
+
+if __name__ == '__main__':
+    unittest.main()
