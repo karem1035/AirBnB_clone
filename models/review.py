@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """define the review class"""
 
-
 from models.base_model import BaseModel
 
 

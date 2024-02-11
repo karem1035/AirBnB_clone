@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """define test class to test base model"""
+
 from models.base_model import BaseModel
 
 import unittest
