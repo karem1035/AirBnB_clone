@@ -43,17 +43,20 @@ class HBNBCommand(cmd.Cmd):
             return
 
         lines = line.split()
-        if len(lines) < 2:
-            print("** instance id missing **")
-            return
         class_name = lines[0]
-        instance_id = lines[1]
-        if not instance_id:
-            print("** instance id missing **")
-            return
 
         if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+
+
+        if len(lines) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = lines[1]
+
+        if not instance_id:
+            print("** instance id missing **")
             return
 
         object_key = f"{class_name}.{instance_id}"
@@ -74,9 +77,14 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         class_name = lines[0]
-        instance_id = lines[1]
+
         if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+        instance_id = lines[1]
+
+        if not instance_id:
+            print("** instance id missing **")
             return
 
         object_key = f"{class_name}.{instance_id}"
