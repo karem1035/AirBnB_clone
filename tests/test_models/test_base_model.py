@@ -10,13 +10,6 @@ import os
 class TestBaseModel(unittest.TestCase):
     """test class for testing BaseModel"""
 
-
-
-
-
-
-
-
     def setUp(self):
         """set up module"""
         try:

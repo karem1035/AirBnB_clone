@@ -57,7 +57,6 @@ class BaseModel:
             from models import storage
             storage.new(self)
 
-
     def __str__(self):
         """print class name, id and dictionary"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
