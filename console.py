@@ -112,8 +112,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-
-            objects = [
+            objects =[
                     str(obj) for obj in storage.all().values()
                     if type(obj).__name__ == class_name
                     ]
@@ -158,6 +157,24 @@ class HBNBCommand(cmd.Cmd):
         obj = objects[object_key]
         setattr(obj, attribute_name, attribute_value)
         obj.save()
+    def default(self, line):
+        """Handle <class name>.all() command"""
+        try:
+            class_name, command = line.split(".", 1)
+            if command == "all()":
+                class_instances = []
+                for key, instance in storage.all().items():
+                    if key.split(".")[0] == class_name:
+                        class_instances.append(str(instance))
+                if class_instances:
+                    print(class_instances)
+                else:
+                    print("** No instances found **")
+            else:
+                raise ValueError
+        except ValueError:
+            print("** Unknown syntax:", line)
+
 
 
 if __name__ == '__main__':
