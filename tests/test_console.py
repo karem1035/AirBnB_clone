@@ -70,12 +70,14 @@ EOF  all  create  destroy  help  quit  show  update\n
             self.assertTrue(result)
             self.assertEqual(mock_stdout.getvalue().strip(), '')
 
+
     def test_help_EOF(self):
         '''tests for the help quit command'''
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             HBNBCommand().onecmd('help quit')
-            self.assertEqual(mock_stdout.getvalue().strip(),
-                             'quit\nquit console returning true')
+            expected_output = 'quit'
+            actual_output = mock_stdout.getvalue().strip().rstrip('\n')
+            self.assertEqual(actual_output, expected_output)
 
     def test_emptyline(self):
         '''tests for the emptyline method'''
@@ -94,11 +96,12 @@ EOF  all  create  destroy  help  quit  show  update\n
             self.assertIsInstance(model_id, str)
             self.assertEqual(model_id, storage.all()[model_key_objects].id)
 
+
     def test_help_create(self):
         '''tests for the help create command'''
         with patch('sys.stdout', new=StringIO()) as mock_stdout:
             HBNBCommand().onecmd('help create')
-            self.assertEqual(mock_stdout.getvalue().strip(),
-                             """create [Model_Type]\ncreates a new instance of given
-                argument type, saves it (to the JSON file)
-                and prints the id""")
+            expected_output = """create [Model_Type]\n\n                creates a new instance of given
+                    argument type, saves it (to the JSON file)
+                    and prints the id"""
+            self.assertEqual(mock_stdout.getvalue().strip(), expected_output)

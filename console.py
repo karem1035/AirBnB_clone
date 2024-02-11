@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_quit(self, line):
-        """Quit command to exit the program"""
+        """quit"""
         return True
 
     def emptyline(self):
@@ -32,7 +32,13 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, line):
-        """Creates a new instance of BaseModel, saves it and prints the id"""
+        """
+        create [Model_Type]
+
+                creates a new instance of given
+                    argument type, saves it (to the JSON file)
+                    and prints the id
+        """
         if not line:
             print("** class name missing **")
             return
