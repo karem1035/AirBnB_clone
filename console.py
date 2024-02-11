@@ -73,13 +73,13 @@ class HBNBCommand(cmd.Cmd):
             return
 
         lines = line.split()
-        if len(lines) < 2:
-            print("** instance id missing **")
-            return
         class_name = lines[0]
 
         if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+        if len(lines) < 2:
+            print("** instance id missing **")
             return
         instance_id = lines[1]
 
@@ -97,20 +97,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints all string representation of all instances based"""
-        try:
-            if not line:
-                objects = storage.all().values()
-            else:
-                class_name = line.strip()
-                class_instance = eval(class_name)
-                if not issubclass(class_instance, BaseModel):
-                    raise NameError
-                objects = [str(obj) for obj in storage.all().values()
-                           if type(obj).__name__ == class_name]
-            print(objects)
-        except NameError:
-            print("** class doesn't exist **")
-            return
+        if not line:
+            objects = storage.all().values()
+        else:
+            class_name = line.strip()
+            if class_name not in self.classes:
+                print("** class doesn't exist **")
+                return
+            objects = [str(obj) for obj in storage.all().values()
+                    if type(obj).__name__ == class_name]
+
+        print(objects)
 
     def do_update(self, line):
         """Updates an instance based on the class name and id by adding
