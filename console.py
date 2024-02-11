@@ -97,7 +97,8 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Prints all string representation of all instances based"""
         if not line:
-            objects = storage.all().values()
+            objects = [str(obj) for obj in storage.all().values()]
+            print(objects)
         else:
             class_name = line.strip()
             if class_name not in self.classes:
