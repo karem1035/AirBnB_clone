@@ -1,0 +1,83 @@
+.filters {
+    background-color: #fff;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.filters button {
+    font-size: 18px;
+    background: #ff5a5f;
+    color: #fff;
+    height: 48px;
+    width: 20%;
+    border: none;
+    border-radius: 4px;
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.filters button:hover {
+    background: rgba(255, 90, 96, 0.9);
+}
+
+h3 {
+    margin-left: 200px;
+}
+
+.locations,
+.amenities {
+    height: 100%;
+    width: calc(25% - 30px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-left: 30px;
+}
+
+.locations {
+    border-right: solid 1px #ddd;
+}
+
+.filters h3 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.filters h4 {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+}
+
+.popover {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #FAFAFA;
+    border: 1px solid #ddd;
+    padding: 30px 0px;
+    display: none;
+}
+
+ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+ul h2 {
+    margin: 0;
+}
+
+.locations:hover .popover {
+    display: block;
+}
+
+.amenities:hover .popover {
+    display: block;
+}
