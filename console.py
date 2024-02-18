@@ -30,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """dp nothing if enter command is given"""
         pass
-
+        
     def do_create(self, line):
         """
         create [Model_Type]

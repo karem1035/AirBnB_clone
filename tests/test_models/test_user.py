@@ -38,9 +38,9 @@ class TestUser(unittest.TestCase):
 
     def test_8_attributes(self):
         """Tests the attributes of User class."""
-        attributes = storage.attributes()["User"]
+        attribute = storage.attribute()["User"]
         o = User()
-        for k, v in attributes.items():
+        for k, v in attribute.items():
             self.assertTrue(hasattr(o, k))
             self.assertEqual(type(getattr(o, k, None)), v)
 
