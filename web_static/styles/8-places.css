@@ -1,0 +1,74 @@
+.places h1 {
+    font-size: 30px;
+    margin-left: 15px;
+}
+
+.places>.places-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+article {
+    width: 390px;
+    margin: 20px;
+    text-align: center;
+    border: 1px solid #ff515f;
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+}
+
+.places>.places-container h2 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.places .price_by_night {
+    color: #ff515f;
+    border: #ff515f 4px solid;
+    border-radius: 500px;
+    font-size: 30px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.information {
+    height: 80px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    padding: 10px 0;
+}
+
+.information p {
+    margin: 0;
+}
+
+.information div {
+    width: 100px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.user .owner {
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.description {
+    text-align: start;
+}
