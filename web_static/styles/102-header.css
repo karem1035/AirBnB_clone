@@ -1,0 +1,11 @@
+header {
+    background: url(../images/logo.png) no-repeat #fff 20px center;
+    height: 70px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    z-index: 10000;
+}
