@@ -83,3 +83,6 @@ ul h2 {
     display: block;
 }
 
+
+
+@@media (max-width: 600px) {
