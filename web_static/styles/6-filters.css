@@ -24,12 +24,12 @@
     background: rgba(255, 90, 96, 0.9);
 }
 
-h3 {
+.filters h3 {
     margin-left: 200px;
 }
 
-.locations,
-.amenities {
+.header-locations,
+.header-amenities {
     height: 100%;
     width: calc(25% - 30px);
     display: flex;
@@ -39,7 +39,7 @@ h3 {
     padding-left: 30px;
 }
 
-.locations {
+.header-locations {
     border-right: solid 1px #ddd;
 }
 
@@ -59,6 +59,7 @@ h3 {
     top: 100%;
     left: 0;
     width: 100%;
+    z-index: 100;
     background-color: #FAFAFA;
     border: 1px solid #ddd;
     padding: 30px 0px;
@@ -74,10 +75,11 @@ ul h2 {
     margin: 0;
 }
 
-.locations:hover .popover {
+.header-locations:hover .popover {
     display: block;
 }
 
-.amenities:hover .popover {
+.header-amenities:hover .popover {
     display: block;
 }
+
